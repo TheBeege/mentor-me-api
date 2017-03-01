@@ -6,38 +6,38 @@ import (
 
 func init() {
 
-	beego.GlobalControllerRouter["github.com/TheBeege/mentor-me-api/controllers:ObjectController"] = append(beego.GlobalControllerRouter["github.com/TheBeege/mentor-me-api/controllers:ObjectController"],
+	beego.GlobalControllerRouter["github.com/TheBeege/mentor-me-api/controllers:TopicController"] = append(beego.GlobalControllerRouter["github.com/TheBeege/mentor-me-api/controllers:TopicController"],
 		beego.ControllerComments{
 			Method: "Post",
 			Router: `/`,
 			AllowHTTPMethods: []string{"post"},
 			Params: nil})
 
-	beego.GlobalControllerRouter["github.com/TheBeege/mentor-me-api/controllers:ObjectController"] = append(beego.GlobalControllerRouter["github.com/TheBeege/mentor-me-api/controllers:ObjectController"],
+	beego.GlobalControllerRouter["github.com/TheBeege/mentor-me-api/controllers:TopicController"] = append(beego.GlobalControllerRouter["github.com/TheBeege/mentor-me-api/controllers:TopicController"],
 		beego.ControllerComments{
-			Method: "Get",
-			Router: `/:objectId`,
+			Method: "GetOne",
+			Router: `/:id`,
 			AllowHTTPMethods: []string{"get"},
 			Params: nil})
 
-	beego.GlobalControllerRouter["github.com/TheBeege/mentor-me-api/controllers:ObjectController"] = append(beego.GlobalControllerRouter["github.com/TheBeege/mentor-me-api/controllers:ObjectController"],
+	beego.GlobalControllerRouter["github.com/TheBeege/mentor-me-api/controllers:TopicController"] = append(beego.GlobalControllerRouter["github.com/TheBeege/mentor-me-api/controllers:TopicController"],
 		beego.ControllerComments{
 			Method: "GetAll",
 			Router: `/`,
 			AllowHTTPMethods: []string{"get"},
 			Params: nil})
 
-	beego.GlobalControllerRouter["github.com/TheBeege/mentor-me-api/controllers:ObjectController"] = append(beego.GlobalControllerRouter["github.com/TheBeege/mentor-me-api/controllers:ObjectController"],
+	beego.GlobalControllerRouter["github.com/TheBeege/mentor-me-api/controllers:TopicController"] = append(beego.GlobalControllerRouter["github.com/TheBeege/mentor-me-api/controllers:TopicController"],
 		beego.ControllerComments{
 			Method: "Put",
-			Router: `/:objectId`,
+			Router: `/:id`,
 			AllowHTTPMethods: []string{"put"},
 			Params: nil})
 
-	beego.GlobalControllerRouter["github.com/TheBeege/mentor-me-api/controllers:ObjectController"] = append(beego.GlobalControllerRouter["github.com/TheBeege/mentor-me-api/controllers:ObjectController"],
+	beego.GlobalControllerRouter["github.com/TheBeege/mentor-me-api/controllers:TopicController"] = append(beego.GlobalControllerRouter["github.com/TheBeege/mentor-me-api/controllers:TopicController"],
 		beego.ControllerComments{
 			Method: "Delete",
-			Router: `/:objectId`,
+			Router: `/:id`,
 			AllowHTTPMethods: []string{"delete"},
 			Params: nil})
 
@@ -50,6 +50,13 @@ func init() {
 
 	beego.GlobalControllerRouter["github.com/TheBeege/mentor-me-api/controllers:UserController"] = append(beego.GlobalControllerRouter["github.com/TheBeege/mentor-me-api/controllers:UserController"],
 		beego.ControllerComments{
+			Method: "GetOne",
+			Router: `/:id`,
+			AllowHTTPMethods: []string{"get"},
+			Params: nil})
+
+	beego.GlobalControllerRouter["github.com/TheBeege/mentor-me-api/controllers:UserController"] = append(beego.GlobalControllerRouter["github.com/TheBeege/mentor-me-api/controllers:UserController"],
+		beego.ControllerComments{
 			Method: "GetAll",
 			Router: `/`,
 			AllowHTTPMethods: []string{"get"},
@@ -57,37 +64,16 @@ func init() {
 
 	beego.GlobalControllerRouter["github.com/TheBeege/mentor-me-api/controllers:UserController"] = append(beego.GlobalControllerRouter["github.com/TheBeege/mentor-me-api/controllers:UserController"],
 		beego.ControllerComments{
-			Method: "Get",
-			Router: `/:uid`,
-			AllowHTTPMethods: []string{"get"},
-			Params: nil})
-
-	beego.GlobalControllerRouter["github.com/TheBeege/mentor-me-api/controllers:UserController"] = append(beego.GlobalControllerRouter["github.com/TheBeege/mentor-me-api/controllers:UserController"],
-		beego.ControllerComments{
 			Method: "Put",
-			Router: `/:uid`,
+			Router: `/:id`,
 			AllowHTTPMethods: []string{"put"},
 			Params: nil})
 
 	beego.GlobalControllerRouter["github.com/TheBeege/mentor-me-api/controllers:UserController"] = append(beego.GlobalControllerRouter["github.com/TheBeege/mentor-me-api/controllers:UserController"],
 		beego.ControllerComments{
 			Method: "Delete",
-			Router: `/:uid`,
+			Router: `/:id`,
 			AllowHTTPMethods: []string{"delete"},
-			Params: nil})
-
-	beego.GlobalControllerRouter["github.com/TheBeege/mentor-me-api/controllers:UserController"] = append(beego.GlobalControllerRouter["github.com/TheBeege/mentor-me-api/controllers:UserController"],
-		beego.ControllerComments{
-			Method: "Login",
-			Router: `/login`,
-			AllowHTTPMethods: []string{"get"},
-			Params: nil})
-
-	beego.GlobalControllerRouter["github.com/TheBeege/mentor-me-api/controllers:UserController"] = append(beego.GlobalControllerRouter["github.com/TheBeege/mentor-me-api/controllers:UserController"],
-		beego.ControllerComments{
-			Method: "Logout",
-			Router: `/logout`,
-			AllowHTTPMethods: []string{"get"},
 			Params: nil})
 
 }
