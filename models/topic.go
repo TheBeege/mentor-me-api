@@ -5,56 +5,48 @@ import (
 	"fmt"
 	"reflect"
 	"strings"
-	"time"
 
 	"github.com/astaxie/beego/orm"
 )
 
-type User struct {
-	Id           int       `orm:"column(id);pk"`
-	Username     string    `orm:"column(username);null"`
-	DisplayName  string    `orm:"column(display_name);null"`
-	Email        string    `orm:"column(email);null"`
-	Created      time.Time `orm:"column(created);type(timestamp without time zone);null"`
-	LastActivity time.Time `orm:"column(last_activity);type(timestamp without time zone)"`
-	Password     string    `orm:"column(password);null"`
-	Description  string    `orm:"column(description);null"`
-	IconUrl      string    `orm:"column(icon_url);null"`
+type Topic struct {
+	Id   int    `orm:"column(id);pk"`
+	Name string `orm:"column(name)"`
 }
 
-func (t *User) TableName() string {
-	return "user"
+func (t *Topic) TableName() string {
+	return "topic"
 }
 
 func init() {
-	orm.RegisterModel(new(User))
+	orm.RegisterModel(new(Topic))
 }
 
-// AddUser insert a new User into database and returns
+// AddTopic insert a new Topic into database and returns
 // last inserted Id on success.
-func AddUser(m *User) (id int64, err error) {
+func AddTopic(m *Topic) (id int64, err error) {
 	o := orm.NewOrm()
 	id, err = o.Insert(m)
 	return
 }
 
-// GetUserById retrieves User by Id. Returns error if
+// GetTopicById retrieves Topic by Id. Returns error if
 // Id doesn't exist
-func GetUserById(id int) (v *User, err error) {
+func GetTopicById(id int) (v *Topic, err error) {
 	o := orm.NewOrm()
-	v = &User{Id: id}
+	v = &Topic{Id: id}
 	if err = o.Read(v); err == nil {
 		return v, nil
 	}
 	return nil, err
 }
 
-// GetAllUser retrieves all User matches certain condition. Returns empty list if
+// GetAllTopic retrieves all Topic matches certain condition. Returns empty list if
 // no records exist
-func GetAllUser(query map[string]string, fields []string, sortby []string, order []string,
+func GetAllTopic(query map[string]string, fields []string, sortby []string, order []string,
 	offset int64, limit int64) (ml []interface{}, err error) {
 	o := orm.NewOrm()
-	qs := o.QueryTable(new(User))
+	qs := o.QueryTable(new(Topic))
 	// query k=v
 	for k, v := range query {
 		// rewrite dot-notation to Object__Attribute
@@ -104,7 +96,7 @@ func GetAllUser(query map[string]string, fields []string, sortby []string, order
 		}
 	}
 
-	var l []User
+	var l []Topic
 	qs = qs.OrderBy(sortFields...)
 	if _, err = qs.Limit(limit, offset).All(&l, fields...); err == nil {
 		if len(fields) == 0 {
@@ -127,11 +119,11 @@ func GetAllUser(query map[string]string, fields []string, sortby []string, order
 	return nil, err
 }
 
-// UpdateUser updates User by Id and returns error if
+// UpdateTopic updates Topic by Id and returns error if
 // the record to be updated doesn't exist
-func UpdateUserById(m *User) (err error) {
+func UpdateTopicById(m *Topic) (err error) {
 	o := orm.NewOrm()
-	v := User{Id: m.Id}
+	v := Topic{Id: m.Id}
 	// ascertain id exists in the database
 	if err = o.Read(&v); err == nil {
 		var num int64
@@ -142,15 +134,15 @@ func UpdateUserById(m *User) (err error) {
 	return
 }
 
-// DeleteUser deletes User by Id and returns error if
+// DeleteTopic deletes Topic by Id and returns error if
 // the record to be deleted doesn't exist
-func DeleteUser(id int) (err error) {
+func DeleteTopic(id int) (err error) {
 	o := orm.NewOrm()
-	v := User{Id: id}
+	v := Topic{Id: id}
 	// ascertain id exists in the database
 	if err = o.Read(&v); err == nil {
 		var num int64
-		if num, err = o.Delete(&User{Id: id}); err == nil {
+		if num, err = o.Delete(&Topic{Id: id}); err == nil {
 			fmt.Println("Number of records deleted in database:", num)
 		}
 	}
