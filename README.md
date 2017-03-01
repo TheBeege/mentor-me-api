@@ -9,4 +9,9 @@ This is the API for the Mentor Me project, this time using Beego. You can find t
 2. [Install Beego](https://beego.me/docs/install/)
 3. [Install dep](https://github.com/golang/dep) - `go get -u github.com/golang/dep/...`
 4. Run `dep ensure` to resolve dependencies
-3. Run `bee run -downdoc=true -gendoc=true` to generate documentation and run the server
+5. [Download](https://www.postgresql.org/download/) and [setup](https://wiki.postgresql.org/wiki/Detailed_installation_guides) PostgreSQL
+6. Create the database user with `psql --username=postgres --password -c "CREATE USER <name> PASSWORD <password>"`
+7. Create the database with `psql  --username=postgres --password -c "CREATE DATABASE <name> OWNER <user_name>"`
+8. Setup the database schema with `psql --user=<user> --password -d <database_name> -f schema.sql`
+9. Set environment variables for `dbhost`, `dbuser`, `dbpass`, and `dbdatabase`.
+10. Run `bee run -downdoc=true -gendoc=true` to generate documentation and run the server
