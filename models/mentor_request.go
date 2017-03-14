@@ -1,6 +1,7 @@
 package models
 
 import (
+	"time"
 	"reflect"
 	"github.com/astaxie/beego/orm"
 	"fmt"
@@ -8,55 +9,88 @@ import (
 	"errors"
 )
 
-type MentorTopic struct {
-	Id int `orm:"column(mentor_topic_id);pk"`
-	User      *User  `orm:"column(user_id);rel(fk)"`
-	Topic     *Topic `orm:"column(topic_id);rel(fk)"`
-	Level       int    `orm:"column(level);null"`
-	Description string `orm:"column(description);null"`
+type MentorRequest struct {
+	Id int `orm:"column(mentor_request_id);pk"`
+	Mentor      *User  `orm:"column(mentor_id);rel(fk)"`
+	Mentee     *User `orm:"column(mentee_id);rel(fk)"`
+	Requested time.Time `orm:"column(requested);type(timestamp without time zone)"`
+	Accepted  time.Time `orm:"column(accepted);type(timestamp without time zone);null"`
+	Rejected  time.Time `orm:"column(rejected);type(timestamp without time zone);null"`
 }
 
-func (t *MentorTopic) TableName() string {
-	return "mentor_topic"
+func (t *MentorRequest) TableName() string {
+	return "mentor_request"
 }
 
 func init() {
-	orm.RegisterModel(new(MentorTopic))
+	orm.RegisterModel(new(MentorRequest))
 }
 
-// AddTopic insert a new MentorTopic into database and returns
-// last inserted Id on MentorTopic.
-func AddMentorTopic(m *MentorTopic) (id int64, err error) {
+// AddMentorRequest insert a new MentorRequest into database and returns
+// last inserted Id on success.
+func AddMentorRequest(m *MentorRequest) (id int64, err error) {
 	o := orm.NewOrm()
 	id, err = o.Insert(m)
 	return
 }
 
-// GetTopicById retrieves MentorTopic by UserId and TopicId. Returns error if
-// Id doesn't exist
-func GetMentorTopicByIds(userId int, topicId int) (v *MentorTopic, err error) {
+// GetMentorRequestByBothIds retrieves MentorRequest by MenteeId. Returns error if
+// MenteeId doesn't exist
+func GetMentorRequestByBothIds(mentorId int, menteeId int) (v *MentorRequest, err error) {
 	o := orm.NewOrm()
-	user, err := GetUserById(userId)
+	mentor, err := GetUserById(mentorId)
 	if err != nil {
 		return nil, err
 	}
-	topic, err := GetTopicById(topicId)
+	mentee, err := GetUserById(menteeId)
 	if err != nil {
 		return nil, err
 	}
-	v = &MentorTopic{User: user, Topic: topic}
+	v = &MentorRequest{Mentor: mentor, Mentee: mentee}
 	if err = o.Read(v); err == nil {
 		return v, nil
 	}
 	return nil, err
 }
 
-// GetAllTopic retrieves all MentorTopic matches certain condition. Returns empty list if
+// GetMentorRequestByMentorId retrieves MentorRequest by MentorId. Returns error if
+// MentorId doesn't exist
+func GetMentorRequestsByMentorId(id int) (ml []interface{}, err error) {
+	o := orm.NewOrm()
+	qs := o.QueryTable(new(MentorRequest))
+	qs.Filter("mentor_id", id)
+	var l []*MentorRequest
+	if _, err = qs.All(&l); err == nil {
+		for _, v := range l {
+			ml = append(ml, v)
+		}
+		return ml, nil
+	}
+	return nil, err
+}
+
+// GetMentorRequestByMenteeId retrieves MentorRequest by MenteeId. Returns error if
+// MenteeId doesn't exist
+func GetMentorRequestsByMenteeId(id int) (ml []interface{}, err error) {
+	o := orm.NewOrm()
+	qs := o.QueryTable(new(MentorRequest))
+	qs.Filter("mentee_id", id)
+	var l []*MentorRequest
+	if _, err = qs.All(&l); err == nil {
+		for _, v := range l {
+			ml = append(ml, v)
+		}
+		return ml, nil
+	}
+	return nil, err
+}
+
+// GetAllMentorRequest retrieves all MentorRequest matches certain condition. Returns empty list if
 // no records exist
-func GetAllMentorTopic(query map[string]string, fields []string, sortby []string, order []string,
+func GetAllMentorRequest(query map[string]string, fields []string, sortby []string, order []string,
 	offset int64, limit int64) (ml []interface{}, err error) {
 	o := orm.NewOrm()
-	qs := o.QueryTable(new(MentorTopic))
+	qs := o.QueryTable(new(MentorRequest))
 	// query k=v
 	for k, v := range query {
 		// rewrite dot-notation to Object__Attribute
@@ -106,7 +140,7 @@ func GetAllMentorTopic(query map[string]string, fields []string, sortby []string
 		}
 	}
 
-	var l []MentorTopic
+	var l []MentorRequest
 	qs = qs.OrderBy(sortFields...)
 	if _, err = qs.Limit(limit, offset).All(&l, fields...); err == nil {
 		if len(fields) == 0 {
@@ -129,11 +163,11 @@ func GetAllMentorTopic(query map[string]string, fields []string, sortby []string
 	return nil, err
 }
 
-// UpdateTopic updates MentorTopic by Id and returns error if
+// UpdateMentorRequest updates MentorRequest by Id and returns error if
 // the record to be updated doesn't exist
-func UpdateMentorTopicById(m *MentorTopic) (err error) {
+func UpdateMentorRequest(m *MentorRequest) (err error) {
 	o := orm.NewOrm()
-	v := MentorTopic{User: m.User, Topic: m.Topic}
+	v := MentorRequest{Mentor: m.Mentor, Mentee: m.Mentee}
 	// ascertain id exists in the database
 	if err = o.Read(&v); err == nil {
 		var num int64
@@ -144,26 +178,25 @@ func UpdateMentorTopicById(m *MentorTopic) (err error) {
 	return
 }
 
-// DeleteTopic deletes MentorTopic by UserId and TopicId and returns error if
+// DeleteMentorRequest deletes MentorRequest by Id and returns error if
 // the record to be deleted doesn't exist
-func DeleteMentorTopic(userId int, topicId int) (err error) {
+func DeleteMentorRequest(mentorId int, menteeId int) (err error) {
 	o := orm.NewOrm()
-	user, err := GetUserById(userId)
+	mentor, err := GetUserById(mentorId)
 	if err != nil {
 		return err
 	}
-	topic, err := GetTopicById(topicId)
+	mentee, err := GetUserById(menteeId)
 	if err != nil {
 		return err
 	}
-	v := MentorTopic{User: user, Topic: topic}
+	v := MentorRequest{Mentor: mentor, Mentee: mentee}
 	// ascertain id exists in the database
 	if err = o.Read(&v); err == nil {
 		var num int64
-		if num, err = o.Delete(&MentorTopic{User: user, Topic: topic}); err == nil {
+		if num, err = o.Delete(&MentorRequest{Mentor: mentor, Mentee: mentee}); err == nil {
 			fmt.Println("Number of records deleted in database:", num)
 		}
 	}
 	return
 }
-

@@ -1,10 +1,10 @@
 // @APIVersion 1.0.0
-// @Title Mentor-Me API
-// @Description Mentor-Me is a simple mentor matchmaking app. Users can sign up as a mentor and/or mentee. Mentors can list a skill they'd like to mentor in along with their level of expertise in said skill. Mentees can search for mentors by skill and level. A mentee can submit a request for mentorship upon finding a desired mentor. The mentor can then accept or reject the request. Upon acceptance, the mentor and mentee will receive each other's contact information.
-// @Contact bryanberry235711@gmail.com
-// @TermsOfServiceUrl #
-// @License MIT License
-// @LicenseUrl https://opensource.org/licenses/MIT
+// @Title beego Test API
+// @Description beego has a very cool tools to autogenerate documents for your API
+// @Contact astaxie@gmail.com
+// @TermsOfServiceUrl http://beego.me/
+// @License Apache 2.0
+// @LicenseUrl http://www.apache.org/licenses/LICENSE-2.0.html
 package routers
 
 import (
@@ -16,15 +16,27 @@ import (
 func init() {
 	ns := beego.NewNamespace("/v1",
 
-		beego.NSNamespace("/topic",
+		beego.NSNamespace("/mentor_topic",
 			beego.NSInclude(
-				&controllers.TopicController{},
+				&controllers.MentorTopicController{},
+			),
+		),
+
+		beego.NSNamespace("/mentor_request",
+			beego.NSInclude(
+				&controllers.MentorRequestController{},
 			),
 		),
 
 		beego.NSNamespace("/user",
 			beego.NSInclude(
 				&controllers.UserController{},
+			),
+		),
+
+		beego.NSNamespace("/topic",
+			beego.NSInclude(
+				&controllers.TopicController{},
 			),
 		),
 	)
