@@ -3,3 +3,4 @@ vendor
 mentor-me-api
 .idea
 swagger
+setup_dev_db_env_vars.sh
