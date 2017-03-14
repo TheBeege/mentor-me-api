@@ -10,7 +10,7 @@ import (
 )
 
 type MentorRequest struct {
-	Id int `orm:"column(mentor_request_id);pk"`
+	Id int `orm:"column(mentor_request_id);pk;auto"`
 	Mentor      *User  `orm:"column(mentor_id);rel(fk)"`
 	Mentee     *User `orm:"column(mentee_id);rel(fk)"`
 	Requested time.Time `orm:"column(requested);type(timestamp without time zone)"`

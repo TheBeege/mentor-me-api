@@ -8,16 +8,17 @@ import (
 	"time"
 
 	"github.com/astaxie/beego/orm"
+	"github.com/astaxie/beego/logs"
 )
 
 type User struct {
-	Id           int       `orm:"column(id);pk"`
-	Username     string    `orm:"column(username);null"`
-	DisplayName  string    `orm:"column(display_name);null"`
-	Email        string    `orm:"column(email);null"`
-	Created      time.Time `orm:"column(created);type(timestamp without time zone);null"`
-	LastActivity time.Time `orm:"column(last_activity);type(timestamp without time zone)"`
-	Password     string    `orm:"column(password);null"`
+	Id           int       `orm:"column(id);pk;auto"`
+	Username     string    `orm:"column(username);unique"`
+	DisplayName  string    `orm:"column(display_name)"`
+	Email        string    `orm:"column(email);unique"`
+	Created      time.Time `orm:"column(created);type(timestamp without time zone);auto_now_add"`
+	LastActivity time.Time `orm:"column(last_activity);type(timestamp without time zone);auto_now"`
+	Password     string    `orm:"column(password);null" json:"omitempty"`
 	Description  string    `orm:"column(description);null"`
 	IconUrl      string    `orm:"column(icon_url);null"`
 }
@@ -34,6 +35,7 @@ func init() {
 // last inserted Id on success.
 func AddUser(m *User) (id int64, err error) {
 	o := orm.NewOrm()
+	logs.GetBeeLogger().Debug("user:", m)
 	id, err = o.Insert(m)
 	return
 }

@@ -9,7 +9,7 @@ import (
 )
 
 type MentorTopic struct {
-	Id int `orm:"column(mentor_topic_id);pk"`
+	Id int `orm:"column(mentor_topic_id);pk;auto"`
 	User      *User  `orm:"column(user_id);rel(fk)"`
 	Topic     *Topic `orm:"column(topic_id);rel(fk)"`
 	Level       int    `orm:"column(level);null"`
