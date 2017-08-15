@@ -2,13 +2,13 @@ package main
 
 import (
 	_ "github.com/TheBeege/mentor-me-api/routers"
-	"github.com/astaxie/beego/orm"
 	"github.com/astaxie/beego"
+	"github.com/astaxie/beego/orm"
 
-	_ "github.com/lib/pq"
-	"time"
-	"os"
 	"fmt"
+	_ "github.com/lib/pq"
+	"os"
+	"time"
 )
 
 func init() {
