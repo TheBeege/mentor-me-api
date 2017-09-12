@@ -37,9 +37,15 @@
   revision = "d4c757aa9afd1e2fc1832aaab209b5794eb336e1"
   version = "1.6.2"
 
+[[projects]]
+  branch = "master"
+  name = "golang.org/x/crypto"
+  packages = ["bcrypt","blowfish"]
+  revision = "74b34b9dd60829a9fcaf56a59e81c3877a8ecd2c"
+
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "fdaaaf532ec9b5fd0ba2c9202bce591aba4cb2d0e41f65794512d21cfe9ef829"
+  inputs-digest = "0b0994826de1ebeebd10479bbbc8087bc2336efade92735329f06a6463610b5f"
   solver-name = "gps-cdcl"
   solver-version = 1

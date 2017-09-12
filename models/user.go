@@ -51,6 +51,17 @@ func GetUserById(id int) (v *User, err error) {
 	return nil, err
 }
 
+// GetUserByEmail retrieves User by Email. Returns error if
+// Id doesn't exist
+func GetUserByEmail(email string) (v *User, err error) {
+	o := orm.NewOrm()
+	v = &User{Email: email}
+	if err = o.Read(v); err == nil {
+		return v, nil
+	}
+	return nil, err
+}
+
 // GetAllUser retrieves all User matches certain condition. Returns empty list if
 // no records exist
 func GetAllUser(query map[string]string, fields []string, sortby []string, order []string,

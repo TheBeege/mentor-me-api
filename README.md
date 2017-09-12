@@ -33,3 +33,6 @@ Windows: `pg_dump -U %dbuser% -W -s -O --clean %dbdatabase% > schema.sql`
 ### How to Import Database Schema
 Mac/Linux: `psql -U ${dbuser} -W < schema.sql`
 Windows: `psql -U %dbuser% -W < schema.sql`
+
+## Thanks
+* Thanks to https://github.com/ikeikeikeike/beego-samples for authentication
