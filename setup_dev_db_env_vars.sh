@@ -1,4 +1,4 @@
-#/bin/bash
+#!/bin/bash
 
 export dbhost=localhost
 export dbuser=someuser
